@@ -1,47 +1,71 @@
 import styled from 'styled-components'
 import { numberOfSquers } from '../utils/consts'
 import { updateBoard } from '../actions/boardAction'
-import {useSelector, useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Squer from './Squer'
 import { ISquer } from '../utils/interfaces'
 import { useEffect } from 'react'
 import img from '../assets/dragon.png'
 import { v4 as uuid } from 'uuid';
-import {Dispatch} from 'redux'
-import {colors} from '../utils/enums'
+import { Dispatch } from 'redux'
+import { IPlayers, playerColors } from '../utils/enums'
+import { updateUserTurn } from '../actions/gameAction'
+import { IBoard } from "../utils/interfaces"
+import { gameStatus } from '../utils/gameStatus'
 
 
-const Board = ()=>{
-const dispatch:Dispatch<any> = useDispatch()
-const {board} = useSelector((state:any)=>state.board)
-useEffect(()=>{
-    console.log(`board is on `);
-},[])
+const Board = () => {
+    const dispatch: Dispatch<any> = useDispatch()
+    const { squers, currentColor } = useSelector((state: any) => state.board)
+    const { currentPlayer } = useSelector((state: any) => state.game)
+    const gameCurrentStatus = gameStatus()
 
-const moveMade = (index:number) =>{
-    let currentColor;
-    if(!board.squers[index].status){
-         currentColor = board.currentColor === colors.BLACK ?colors.RED:colors.BLACK;
-    } else {
-        //currentColor =board.currentColor
-        return
+    useEffect(() => {
+        console.log(`board is on `);
+
+    }, [])
+
+    useEffect(() => {
+        console.log(gameCurrentStatus.testAllSteps(squers))
+        console.log(`aaaaaaaaaaaaaaaaaaaaaaaaa`);
+    }, [currentColor])
+
+
+    const moveMade = (index: number) => {
+        let updatedCurrentColor;
+
+        if (!squers[index].status) {
+            updatedCurrentColor = currentColor === playerColors.BLACK ? playerColors.RED : playerColors.BLACK;
+        } else {
+            //currentColor =board.currentColor
+            return
+        }
+        const newSquer: ISquer = {
+            color: currentColor,
+            status: !squers[index].status,
+            index: index
+        }
+
+        squers[index] = newSquer
+        const newBoard: IBoard = {
+            squers: squers,
+            currentColor: updatedCurrentColor,
+            status: true
+        }
+        dispatch(updateBoard(newBoard))
+        updateGameForMovement()
     }
-    const newSquer : ISquer = {
-        color:currentColor,
-        status:!board.squers[index].status,
-        index:index
+    const updateGameForMovement = () => {
+        const playerTurn = currentPlayer === IPlayers.PLAYER_ONE ? IPlayers.PLAYER_TWO : IPlayers.PLAYER_ONE;
+        dispatch(updateUserTurn(playerTurn))
     }
-    board.currentColor = currentColor
-    board.squers[index] = newSquer
-    dispatch(updateBoard(board))
-}
-return (         
-    <StyledBoard >   
-                {board?.squers?.map((current:ISquer)=>(
-                <Squer updateSquer={moveMade}  key={uuid()} index={current.index} status={current.status} color={current.color} />
-                ))}
-    </StyledBoard>
-)
+    return (
+        <StyledBoard >
+            {squers?.map((current: ISquer) => (
+                <Squer updateSquer={moveMade} key={uuid()} index={current.index} status={current.status} color={current.color} />
+            ))}
+        </StyledBoard>
+    )
 }
 
 export default Board
@@ -55,10 +79,10 @@ const StyledBoard = styled.div`
     border:1px solid black;
     justify-content:space-around;
     margin:0 auto;
-    background-image:url(${img});
     background-size:150px;
     background-repeat:no-repeat;
     background-position:top right;
+    background-color:rgba(99, 49, 219, 0.38);
     
 
 `

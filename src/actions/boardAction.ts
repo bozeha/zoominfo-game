@@ -6,7 +6,9 @@ export const actionType = {
 export const updateBoard = (board:IBoard)=> (dispatch:any)=>{
     dispatch( {
         type:actionType.UPDATE_BOARD,
-        board:board
+        status:board.status,
+        squers:board.squers,
+        currentColor:board.currentColor
     })
 
 }

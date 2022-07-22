@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
-
+import GlobalStyles from './globalStyles';
 import { allReducers } from "./reducers";
 import { Provider } from "react-redux";
 import thank from "redux-thunk";
@@ -30,6 +30,7 @@ const root = ReactDOM.createRoot(
 root.render(
   
 	  <Provider store={store}>
+      <GlobalStyles/>
 		<App />
 	  </Provider>
   

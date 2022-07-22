@@ -1,5 +1,6 @@
 
 
+
 export interface IActionData  {
     type:string,
     users:Array<IUser>
@@ -7,9 +8,18 @@ export interface IActionData  {
 
 export interface IActionBoard{
     type:string,
-    board:IBoard
+    status:true,
+    squers:[],
+    currentColor:-1
 }
 
+export interface IActionGame{
+    type:string,
+    moveNumber : number,
+    currentPlayer:number,
+    playerOne:IPlayer,
+    playerTwo:IPlayer
+}
 export interface IUser {
     id:number,
     name:string,
@@ -19,13 +29,37 @@ export interface IUser {
 export interface ISquer{
     index:number,
     status:boolean,
-    color:string
+    color:number
 }
 
 export interface IBoard{
     status:boolean,
     squers:Array<ISquer>,
-    currentColor:string
+    currentColor:number
+
+}
+
+export interface IPlayersColors{
+    RED:number,
+    BLACK:number
+}
+
+export interface IPlayers {
+    PLAYER_ONE:number,
+    PLAYER_TWO:number
+}
+
+export interface IPlayer{
+    name:string,
+    color:number,
+    step:number
+}
+
+export interface IGame {
+    moveNumber : number,
+    currentPlayer:number,
+    playerOne:IPlayer,
+    playerTwo:IPlayer
 
 }
 
