@@ -27,6 +27,7 @@ function App() {
   const { users } = useSelector((state: any) => state.users)
   const dispatch: Dispatch<any> = useDispatch()
   useEffect(() => {
+    console.log(`app runderd `);
     dispatch(updateUsers(arrOfUsers))
     createBoard()
   }, [])
@@ -66,12 +67,12 @@ function App() {
   }
   return (
     <div className="App">
+      {popupStatus &&
+        <Popup title="Wellcome" key={"popup"} buttons={playersButtons} inputs={playersInput} status={setPopupStatus} />
+      }
       <header className="App-header">
       </header>
       <InfoBoard firstUserName={playerOneName} secondUserName={playerTwoName} />
-      {popupStatus &&
-        <Popup title="Wellcome" buttons={playersButtons} inputs={playersInput} status={setPopupStatus} />
-      }
       <Board />
     </div>
   );

@@ -1,20 +1,25 @@
 import { actionTypes } from "../actions/dataAction";
 import { IActionBoard, IBoard } from "../utils/interfaces";
 import { actionType } from "../actions/boardAction";
-const initial:IBoard = {
-    status:true,
-    squers:[],
-    currentColor:-1
+const initial: IBoard = {
+    status: true,
+    squers: [],
+    currentColor: -1
 }
 
-const boardReducer = (state = initial,action:IActionBoard) =>{
-    switch(action.type){
+const boardReducer = (state = initial, action: IActionBoard) => {
+    switch (action.type) {
         case actionType.UPDATE_BOARD:
-            return{
+            return {
                 ...state,
-                status:action.status,
-                squers:action.squers,
-                currentColor:action.currentColor
+                status: action.status,
+                squers: action.squers,
+                currentColor: action.currentColor
+            }
+        case actionTypes.UPDATE_USERS:
+            return {
+                ...state,
+                squers: action.squers
             }
         default:
             return {

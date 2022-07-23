@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import black from '../assets/black.png'
 import red from '../assets/red.png'
+import arrow from '../assets/arrow.gif'
 import { useSelector } from 'react-redux'
 import { IGame } from "../utils/interfaces"
 import { Players } from "../utils/enums"
@@ -17,6 +18,7 @@ const InfoBoard = ({ firstUserName, secondUserName }: users) => {
     const { currentPlayer } = useSelector((state: any) => state.game)
     return (
         <StyledInfoBoard>
+            <img className={currentPlayer === Players.PLAYER_ONE ? "first" : currentPlayer === Players.PLAYER_TWO ? "second" : "none"} src={arrow} />
             <div>
                 <div className={currentPlayer === Players.PLAYER_ONE ? "selected" : ""}> First user :<img src={black} /></div>{firstUserName}
             </div>
@@ -32,12 +34,26 @@ const InfoBoard = ({ firstUserName, secondUserName }: users) => {
 export default InfoBoard
 
 const StyledInfoBoard = styled.div`
-width:150px;
+width:180px;
 height:300px;
 background-color:#340E52;
 border-radius:20px;
 position:absolute;
 padding:20px;
+img{
+    width: 40px;
+    position: absolute;
+    right: -20px;
+    &.first{
+        top: 32px;
+    }
+    &.second{
+        top: 105px;
+    }
+    &.none{
+        display:none;
+    }
+}
 >div{
     color:white;
     font-size:20px;
@@ -57,7 +73,8 @@ padding:20px;
 
 }
 .selected{
-    background-color:red;
+    
+    border:2px solid #E59C1D;
 }
 
 `

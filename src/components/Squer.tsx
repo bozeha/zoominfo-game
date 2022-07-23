@@ -2,6 +2,7 @@
 import styled from 'styled-components'
 import redCoin from '../assets/red.png'
 import blackCoin from '../assets/black.png'
+import coin from '../assets/coin.gif'
 import { PlayerColors } from '../utils/enums'
 
 type props = {
@@ -13,7 +14,7 @@ type props = {
 
 const Squer = ({ index, color, status, updateSquer }: props) => {
 
-    return <StyledSquer className={`${!status ? "" : color === PlayerColors.BLACK ? "black" : "red"}`} id={`squer-class${index}`} onClick={() => updateSquer(index)} >{index}</StyledSquer>
+    return <StyledSquer className={`${!status ? "" : color === PlayerColors.BLACK ? "black" : color === PlayerColors.RED ? "red" : "gray"}`} id={`squer-class${index}`} onClick={() => updateSquer(index)} >{index}</StyledSquer>
 }
 
 export default Squer
@@ -40,6 +41,11 @@ background-color:rgba(0,0,0,0.2);
     background-repeat:no-repeat;
     background-size:100%;
 }
-
+&.gray{
+    background-image:url(${coin});
+    background-repeat:no-repeat;
+    background-size:100%;
+    border-color:#E59C1D;
+}
 
 `

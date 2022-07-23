@@ -6,7 +6,8 @@
 
 export enum PlayerColors {
     RED = 1,
-    BLACK = 2
+    BLACK = 2,
+    GRAY = 3
 }
 
 export enum Players {

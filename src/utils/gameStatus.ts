@@ -39,7 +39,7 @@ export const gameStatus = () => {
             ///////////////////horizental 
             for (let loop = 0; loop < 6; loop++) {
                 const startArr = loop * 7;
-                const endArr = (loop * 7) + 6
+                const endArr = (loop * 7) + 7
                 const newArray = squers.slice(startArr, endArr);
                 const firstColor = newArray[0]?.color
                 if (resultsObj.horizObj.won != true) {

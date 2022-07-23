@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { numberOfSquers } from '../utils/consts'
-import { updateBoard } from '../actions/boardAction'
+import { updateBoard, updateSquers } from '../actions/boardAction'
 import { useSelector, useDispatch } from 'react-redux'
 import Squer from './Squer'
 import { IGameStatus, ISquer } from '../utils/interfaces'
@@ -28,7 +28,6 @@ const Board = () => {
 
     useEffect(() => {
         const gameResults = gameCurrentStatus.testAllSteps(squers);
-        console.log(`gameResults:::::::${JSON.stringify(gameResults)}#####`);
         const newGameStatus: IGameStatus = {
             status: gameResults.gameStatus.status,
             wonObj: {
@@ -38,18 +37,19 @@ const Board = () => {
         }
         dispatch(updateGameStatus(newGameStatus))
         if (newGameStatus.status === GameStatus.PLAYER_WON) {
-            //console.log(`boardRef.current.children[0]:::::::${JSON.stringify(boardRef.current.children[0])}#####`);
-            boardRef.current.style.backgroundColor = "red"
-
-            //boardRef.current.children[0].style.backgroundColor = "blue"
+            won(newGameStatus)
         }
 
     }, [currentColor])
 
-    // const wonEffect = (arr: Array<number>) => {
+    const won = (newGameStatus: IGameStatus) => {
 
-
-    // }
+        const newSquersArray: Array<ISquer> = [...squers]
+        for (let loop = 0; loop < 4; loop++) {
+            newSquersArray[newGameStatus.wonObj.steps[loop]].color = PlayerColors.GRAY
+        }
+        dispatch(updateSquers(newSquersArray))
+    }
 
     const moveMade = (index: number) => {
         let updatedCurrentColor;
@@ -57,7 +57,6 @@ const Board = () => {
         if (!squers[index].status) {
             updatedCurrentColor = currentColor === PlayerColors.BLACK ? PlayerColors.RED : PlayerColors.BLACK;
         } else {
-            //currentColor =board.currentColor
             return
         }
         const newSquer: ISquer = {

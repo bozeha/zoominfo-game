@@ -1,9 +1,12 @@
 
 import styled from 'styled-components'
 import { v4 as uuid } from 'uuid';
+import { useEffect } from 'react';
 
 const Popup = ({ title, inputs, status, buttons }: any) => {
-
+    useEffect(() => {
+        console.log(`rerender popup`);
+    }, [])
     return (
         <StyledPopup>
             <button className="close" onClick={() => status(false)}>x</button>
