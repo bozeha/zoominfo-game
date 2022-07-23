@@ -13,8 +13,8 @@ import InfoBoard from './components/InfoBoard';
 
 function App() {
 
-  //let arrOfUsers : IUser[] = []
-  const arrOfUsers: IUser[] = [{ id: 123, name: "aaa" }]
+
+  const arrOfUsers: IUser[] = []
   const board: IBoard = {
     squers: [],
     status: true,
@@ -22,35 +22,44 @@ function App() {
   }
 
   const [popupStatus, setPopupStatus] = useState(true)
-  const [playerOneName, setPlayerOneName] = useState("")
-  const [playerTwoName, setPlayerTwoName] = useState("")
+  const [playerOneName, setPlayerOneName] = useState("Dan")
+  const [playerTwoName, setPlayerTwoName] = useState("Bob")
   const { users } = useSelector((state: any) => state.users)
   const dispatch: Dispatch<any> = useDispatch()
   useEffect(() => {
-    console.log(`app runderd `);
     dispatch(updateUsers(arrOfUsers))
     createBoard()
+    addUsers()
   }, [])
+  useEffect(() => {
+    console.log(`App runderd `);
+  })
 
-  const addUser = () => {
+
+  const addUsers = () => {
     const tempNewUser1: IUser = {
       id: 1,
-      name: playerOneName
+      name: playerOneName,
+      age: 22
     }
     const tempNewUser2: IUser = {
       id: 2,
-      name: playerTwoName
+      name: playerTwoName,
+      age: 23
     }
     dispatch(updateUsers([tempNewUser1, tempNewUser2]))
     setPopupStatus(false)
   }
+  const playersButtons = [
+    { text: "Add users", action: addUsers }
+  ]
   const playersInput = [
     { title: "Enter player number one:", set: setPlayerOneName, val: playerOneName },
     { title: "Enter player number two:", set: setPlayerTwoName, val: playerTwoName }
   ]
-  const playersButtons = [
-    { text: "Add users", action: addUser }
-  ]
+
+
+
   const createBoard = () => {
     for (let loop = 0; loop < numberOfSquers; loop++) {
       const newSquer: ISquer = {
@@ -65,13 +74,15 @@ function App() {
 
 
   }
+
   return (
     <div className="App">
-      {popupStatus &&
+      {/* {popupStatus &&
         <Popup title="Wellcome" key={"popup"} buttons={playersButtons} inputs={playersInput} status={setPopupStatus} />
-      }
+      } */}
       <header className="App-header">
       </header>
+
       <InfoBoard firstUserName={playerOneName} secondUserName={playerTwoName} />
       <Board />
     </div>

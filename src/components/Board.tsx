@@ -1,30 +1,29 @@
 import styled from 'styled-components'
-import { numberOfSquers } from '../utils/consts'
 import { updateBoard, updateSquers } from '../actions/boardAction'
 import { useSelector, useDispatch } from 'react-redux'
 import Squer from './Squer'
 import { IGameStatus, ISquer } from '../utils/interfaces'
-import { useEffect, useRef } from 'react'
-import img from '../assets/dragon.png'
+import { useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid';
 import { Dispatch } from 'redux'
 import { Players, PlayerColors, GameStatus } from '../utils/enums'
 import { updateGameStatus, updateUserTurn } from '../actions/gameAction'
 import { IBoard } from "../utils/interfaces"
 import { gameStatus } from '../utils/gameStatus'
+import Popup from './popup'
+import { congrat } from '../utils/consts'
 
 
 const Board = () => {
     const dispatch: Dispatch<any> = useDispatch()
     const { squers, currentColor } = useSelector((state: any) => state.board)
-    const { currentPlayer, gaemStatus } = useSelector((state: any) => state.game)
+    const { currentPlayer, gaemStatus, playerOne, playerTwo } = useSelector((state: any) => state.game)
     const gameCurrentStatus = gameStatus()
     const boardRef = useRef<HTMLDivElement>(document.createElement("div"))
-
-    useEffect(() => {
-        console.log(`board is on `);
-
-    }, [])
+    const [showPopup, setShowPopup] = useState(false)
+    const newGameButton = [
+        { text: "New Game", action: () => { window.location.reload() } }
+    ]
 
     useEffect(() => {
         const gameResults = gameCurrentStatus.testAllSteps(squers);
@@ -49,6 +48,8 @@ const Board = () => {
             newSquersArray[newGameStatus.wonObj.steps[loop]].color = PlayerColors.GRAY
         }
         dispatch(updateSquers(newSquersArray))
+
+        setShowPopup(true)
     }
 
     const moveMade = (index: number) => {
@@ -80,6 +81,9 @@ const Board = () => {
     }
     return (
         <StyledBoard ref={boardRef} >
+            {showPopup &&
+                <Popup text={`${congrat}`} title={`${currentPlayer === Players.PLAYER_TWO ? playerOne.name : playerTwo.name} Won !!!!!!!!!`} buttons={newGameButton} status={setShowPopup} />
+            }
             {squers?.map((current: ISquer) => (
                 <Squer updateSquer={moveMade} key={uuid()} index={current.index} status={current.status} color={current.color} />
             ))}

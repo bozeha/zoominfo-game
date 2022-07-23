@@ -1,9 +1,12 @@
 
 import styled from 'styled-components'
 import { v4 as uuid } from 'uuid';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const Popup = ({ title, inputs, status, buttons }: any) => {
+const Popup = ({ title = "", text, inputs = [], status, buttons = [] }: any) => {
+
+    const [autoFocus, setAutoFocus] = useState()
+
     useEffect(() => {
         console.log(`rerender popup`);
     }, [])
@@ -11,6 +14,7 @@ const Popup = ({ title, inputs, status, buttons }: any) => {
         <StyledPopup>
             <button className="close" onClick={() => status(false)}>x</button>
             <h3>{title}</h3>
+            <h4>{text}</h4>
             <StyledBottons>
 
             </StyledBottons>
@@ -18,7 +22,7 @@ const Popup = ({ title, inputs, status, buttons }: any) => {
                 {inputs && inputs.map((current: any) => (
                     <div key={uuid()}>
                         <span>{current.title}</span>
-                        <input value={current.val} onChange={(e) => current.set(e.target.value)} />
+                        <input />
                     </div>
                 ))
 
@@ -46,12 +50,18 @@ top: 50%;
 transform: translate(-50%,-50%);
 border-radius: 20px;
 display:flex;
+align-items: center;
 flex-direction:column;
 background-image: linear-gradient(to top, white 75%, #340E52 25%);
 h3{
     text-align:center;
     color:white;
     font-weight:bold;
+}
+h4{
+    color:black;
+    padding:0px 10px;
+
 }
 }
 .close{
@@ -66,9 +76,19 @@ h3{
     font-size:20px;
     
 }
+button{
+    width: max-content;
+    background-color: rgba(99,49,219,0.38);
+    border: none;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 5px
+}
 `
 
 const StyledBottons = styled.div`
+
+
 
 `
 const StyleInputs = styled.div``

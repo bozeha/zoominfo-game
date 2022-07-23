@@ -14,7 +14,7 @@ type props = {
 
 const Squer = ({ index, color, status, updateSquer }: props) => {
 
-    return <StyledSquer className={`${!status ? "" : color === PlayerColors.BLACK ? "black" : color === PlayerColors.RED ? "red" : "gray"}`} id={`squer-class${index}`} onClick={() => updateSquer(index)} >{index}</StyledSquer>
+    return <StyledSquer className={`${!status ? "" : color === PlayerColors.BLACK ? "black" : color === PlayerColors.RED ? "red" : "gray"}`} id={`squer-class${index}`} onClick={() => updateSquer(index)} ></StyledSquer>
 }
 
 export default Squer
