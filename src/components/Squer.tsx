@@ -2,18 +2,18 @@
 import styled from 'styled-components'
 import redCoin from '../assets/red.png'
 import blackCoin from '../assets/black.png'
-import { playerColors } from '../utils/enums'
+import { PlayerColors } from '../utils/enums'
 
 type props = {
-    index:number,
-    color:number,
-    status:boolean,
-    updateSquer:any
+    index: number,
+    color: number,
+    status: boolean,
+    updateSquer: any
 }
 
-const Squer = ({index,color,status, updateSquer}:props) =>{
+const Squer = ({ index, color, status, updateSquer }: props) => {
 
-    return <StyledSquer className={!status ? "" : color === playerColors.BLACK ? "black":"red"} onClick={()=>updateSquer(index)} >{index}</StyledSquer>
+    return <StyledSquer className={`${!status ? "" : color === PlayerColors.BLACK ? "black" : "red"}`} id={`squer-class${index}`} onClick={() => updateSquer(index)} >{index}</StyledSquer>
 }
 
 export default Squer

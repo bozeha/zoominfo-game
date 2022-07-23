@@ -1,27 +1,27 @@
 import styled from "styled-components"
 import black from '../assets/black.png'
 import red from '../assets/red.png'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 import { IGame } from "../utils/interfaces"
-import { IPlayers } from "../utils/enums"
+import { Players } from "../utils/enums"
 import gameReducer from "../reducers/game"
 
 type users = {
-    firstUserName:string;
-    secondUserName:string;
+    firstUserName: string;
+    secondUserName: string;
 
 }
 
 
-const InfoBoard = ({firstUserName, secondUserName}:users) =>{
-const {currentPlayer} = useSelector((state:any)=>state.game)
+const InfoBoard = ({ firstUserName, secondUserName }: users) => {
+    const { currentPlayer } = useSelector((state: any) => state.game)
     return (
         <StyledInfoBoard>
             <div>
-               <div className={currentPlayer === IPlayers.PLAYER_ONE ? "selected":""}> First user :<img src={black}/></div>{firstUserName}
+                <div className={currentPlayer === Players.PLAYER_ONE ? "selected" : ""}> First user :<img src={black} /></div>{firstUserName}
             </div>
             <div>
-                <div className={currentPlayer === IPlayers.PLAYER_TWO ? "selected":""}>Second user :<img src={red}/></div>{secondUserName}
+                <div className={currentPlayer === Players.PLAYER_TWO ? "selected" : ""}>Second user :<img src={red} /></div>{secondUserName}
             </div>
         </StyledInfoBoard>
     )

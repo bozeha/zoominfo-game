@@ -3,13 +3,13 @@ import { numberOfSquers } from '../utils/consts'
 import { updateBoard } from '../actions/boardAction'
 import { useSelector, useDispatch } from 'react-redux'
 import Squer from './Squer'
-import { ISquer } from '../utils/interfaces'
-import { useEffect } from 'react'
+import { IGameStatus, ISquer } from '../utils/interfaces'
+import { useEffect, useRef } from 'react'
 import img from '../assets/dragon.png'
 import { v4 as uuid } from 'uuid';
 import { Dispatch } from 'redux'
-import { IPlayers, playerColors } from '../utils/enums'
-import { updateUserTurn } from '../actions/gameAction'
+import { Players, PlayerColors, GameStatus } from '../utils/enums'
+import { updateGameStatus, updateUserTurn } from '../actions/gameAction'
 import { IBoard } from "../utils/interfaces"
 import { gameStatus } from '../utils/gameStatus'
 
@@ -17,8 +17,9 @@ import { gameStatus } from '../utils/gameStatus'
 const Board = () => {
     const dispatch: Dispatch<any> = useDispatch()
     const { squers, currentColor } = useSelector((state: any) => state.board)
-    const { currentPlayer } = useSelector((state: any) => state.game)
+    const { currentPlayer, gaemStatus } = useSelector((state: any) => state.game)
     const gameCurrentStatus = gameStatus()
+    const boardRef = useRef<HTMLDivElement>(document.createElement("div"))
 
     useEffect(() => {
         console.log(`board is on `);
@@ -26,16 +27,35 @@ const Board = () => {
     }, [])
 
     useEffect(() => {
-        console.log(gameCurrentStatus.testAllSteps(squers))
-        console.log(`aaaaaaaaaaaaaaaaaaaaaaaaa`);
+        const gameResults = gameCurrentStatus.testAllSteps(squers);
+        console.log(`gameResults:::::::${JSON.stringify(gameResults)}#####`);
+        const newGameStatus: IGameStatus = {
+            status: gameResults.gameStatus.status,
+            wonObj: {
+                direction: gameResults.gameStatus.wonObj.direction,
+                steps: gameResults.gameStatus.wonObj.steps
+            }
+        }
+        dispatch(updateGameStatus(newGameStatus))
+        if (newGameStatus.status === GameStatus.PLAYER_WON) {
+            //console.log(`boardRef.current.children[0]:::::::${JSON.stringify(boardRef.current.children[0])}#####`);
+            boardRef.current.style.backgroundColor = "red"
+
+            //boardRef.current.children[0].style.backgroundColor = "blue"
+        }
+
     }, [currentColor])
 
+    // const wonEffect = (arr: Array<number>) => {
+
+
+    // }
 
     const moveMade = (index: number) => {
         let updatedCurrentColor;
 
         if (!squers[index].status) {
-            updatedCurrentColor = currentColor === playerColors.BLACK ? playerColors.RED : playerColors.BLACK;
+            updatedCurrentColor = currentColor === PlayerColors.BLACK ? PlayerColors.RED : PlayerColors.BLACK;
         } else {
             //currentColor =board.currentColor
             return
@@ -56,11 +76,11 @@ const Board = () => {
         updateGameForMovement()
     }
     const updateGameForMovement = () => {
-        const playerTurn = currentPlayer === IPlayers.PLAYER_ONE ? IPlayers.PLAYER_TWO : IPlayers.PLAYER_ONE;
+        const playerTurn = currentPlayer === Players.PLAYER_ONE ? Players.PLAYER_TWO : Players.PLAYER_ONE;
         dispatch(updateUserTurn(playerTurn))
     }
     return (
-        <StyledBoard >
+        <StyledBoard ref={boardRef} >
             {squers?.map((current: ISquer) => (
                 <Squer updateSquer={moveMade} key={uuid()} index={current.index} status={current.status} color={current.color} />
             ))}

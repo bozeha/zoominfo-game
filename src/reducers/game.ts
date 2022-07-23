@@ -1,45 +1,58 @@
-import {IActionGame, IGame} from '../utils/interfaces'
-import {playerColors,IPlayers} from '../utils/enums'
+import { IActionGame, IGame } from '../utils/interfaces'
+import { PlayerColors, Players, GameStatus, WonDirection } from '../utils/enums'
 import { AnyAction } from 'redux'
 import { actionTypes } from '../actions/gameAction'
 
 
-const initial:IGame ={
-    moveNumber:0,
-    currentPlayer:IPlayers.PLAYER_ONE,
-    playerOne:{
-        name:"",
-        color: -1,
-        step:0
+const initial: IGame = {
+    gameStatus: {
+        status: GameStatus.NOT_STARTED,
+        wonObj: {
+            direction: WonDirection.NONE,
+            steps: []
+
+        }
     },
-    playerTwo:{
-        name:"",
+    moveNumber: 0,
+    currentPlayer: Players.PLAYER_ONE,
+    playerOne: {
+        name: "",
         color: -1,
-        step:0
+        step: 0
+    },
+    playerTwo: {
+        name: "",
+        color: -1,
+        step: 0
     }
 
-} 
+}
 
 
 
-const gameReducer = (state = initial, action:IActionGame)=>{
+const gameReducer = (state = initial, action: IActionGame) => {
 
-    switch(action.type){
+    switch (action.type) {
         case actionTypes.ADD_PLAYERS:
             return {
                 ...state,
-                playerOne:action.playerOne,
-                playerTwo:action.playerTwo,
+                playerOne: action.playerOne,
+                playerTwo: action.playerTwo,
             }
         case actionTypes.USER_TURN:
-            return{
+            return {
                 ...state,
-                currentPlayer:action.currentPlayer
+                currentPlayer: action.currentPlayer
             }
-            default:
-                return {
-                    ...state
-                }
+        case actionTypes.UPDATE_GAME_STATUS:
+            return {
+                ...state,
+                gameStatus: action.gameStatus
+            }
+        default:
+            return {
+                ...state
+            }
     }
 
 }
